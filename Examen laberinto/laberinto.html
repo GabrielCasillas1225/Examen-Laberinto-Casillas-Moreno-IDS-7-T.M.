@@ -48,7 +48,11 @@
         let walls = [];
         let pause = false;
         let score = 0;
-        
+
+        // variables para tiempo del juego *********************************************
+        var tiempoInicio = Date.now();
+        var tiempoTranscurrido = 0;
+
         let image = new Image(20, 20);
         image.src = "./luigioriginal.png";
 
@@ -62,7 +66,7 @@
         audio2.src = "./fondomariogalaxy.mp3"*/
 
         /*let audio3 = new Audio();
-        audio3.src = "mario-vida.mp3"*/
+        audio3.src = "mariovida.mp3"*/
 
         let audioFondo = new Audio();
         audioFondo.src = "./marioremixfondo.mp3"
@@ -557,24 +561,24 @@
 
 //********************************************************************************
 
-
-
-
-
-
-
-
-
-
+        
         function update(t) {
+
+            // se le agrego el tiempo al juego
+            if (!pause) {
+                tiempoTranscurrido = Math.floor((Date.now() - tiempoInicio) / 1000);
+            }
+
+
+
 
             // CODIGO NUEVO
             for (let i = cubos.length - 1; i >= 0; i--) {
-    if (cubos[i].seToca(player)) {
-        score += 10; // Ajusta la cantidad de puntos que deseas sumar
-        audio.play();
-    }
-}
+                if (cubos[i].seToca(player)) {
+                    score += 10; // Ajusta la cantidad de puntos que deseas sumar
+                    audio.play();
+                }
+            }       
 
 
 //****************************************************************************************
@@ -661,13 +665,26 @@
          // FUNCION REPAINT
         function repaint() {
 
+        /* if (player.seTocan(target) && !pause) {
+        // Mostrar un mensaje de fin de juego
+        ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.font = "30px Arial";
+        ctx.fillStyle = "white";
+        ctx.fillText("¡Juego Terminado!", 150, 250);
+        pause = true; // Detener el juego
+        return; // Salir de la función update
+    }*/
+
+
+
             if (!pause) {
                 ctx.fillStyle = "white";
                 ctx.fillRect(0, 0, 500, 500);
 
-                ctx.font = "30px Verdana";
+                ctx.font = "30px Arial";
                 ctx.fillStyle = "black";
-                ctx.fillText("score:" + score, 20, 30);
+                ctx.fillText("Score:" + score, 20, 30);
 
                 player.c = random_rgba();
                 //player.paint(ctx)
@@ -698,6 +715,13 @@
                 ctx.fillStyle = "black";
                 ctx.fillText("P a u s a", 190, 200);
             }
+
+             // Agregar el tiempo al canvas
+            ctx.font = "30px Arial";
+            ctx.fillStyle = "black";
+            ctx.fillText("Tiempo: " + tiempoTranscurrido + "s", 350, 30);
+
+
         }
 
 
